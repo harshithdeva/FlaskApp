@@ -12,6 +12,10 @@ from flask_babel import Babel, lazy_gettext as _l
 from config import Config
 
 app = Flask(__name__)
+app.config['SECRET_KEY'] = 'you-will-never-guess'
+app.config['RECAPTCHA_PUBLIC_KEY'] = '6Lf8CR0lAAAAAHSr5NzUwqv2EsR8TsldHdNTQA78'
+app.config['RECAPTCHA_PRIVATE_KEY'] = '6Lf8CR0lAAAAANObABekbAhjdhTp-4_DD_DqBFxo'
+app.config['TESTING'] = True
 app.config.from_object(Config)
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)

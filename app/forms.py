@@ -5,7 +5,8 @@ from wtforms.validators import ValidationError, DataRequired, Email, EqualTo, \
     Length
 from flask_babel import _, lazy_gettext as _l
 from app.models import User
-
+from app import app
+from flask_wtf import RecaptchaField
 
 class LoginForm(FlaskForm):
     username = StringField(_l('Username'), validators=[DataRequired()])
@@ -21,8 +22,8 @@ class RegistrationForm(FlaskForm):
     password2 = PasswordField(
         _l('Repeat Password'), validators=[DataRequired(),
                                            EqualTo('password')])
+    recaptcha = RecaptchaField()
     submit = SubmitField(_l('Register'))
-
     def validate_username(self, username):
         user = User.query.filter_by(username=username.data).first()
         if user is not None:

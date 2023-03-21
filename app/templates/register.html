@@ -2,10 +2,17 @@
 {% import 'bootstrap/wtf.html' as wtf %}
 
 {% block app_content %}
-    <h1>{{ _('Register') }}</h1>
-    <div class="row">
-        <div class="col-md-4">
-            {{ wtf.quick_form(form) }}
-        </div>
-    </div>
+<h1>Register</h1>
+<form action="" method="post">
+    {{ form.hidden_tag() }}
+    <d>
+        {{wtf.form_field(form.username)}}
+        {{wtf.form_field(form.email)}}
+        {{wtf.form_field(form.password)}}
+        {{wtf.form_field(form.password2)}}
+        {{form.recaptcha }}
+    </d>
+    <p> <input class="btn btn-primary" type="submit" value="Register"></p>
+
+</form>
 {% endblock %}
