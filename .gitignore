@@ -1,4 +1,4 @@
 __pycache__/
 logs/
 venv/
-.db
+app.db
