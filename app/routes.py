@@ -5,9 +5,10 @@ from werkzeug.urls import url_parse
 from flask_babel import _, get_locale
 from app import app, db
 from app.forms import LoginForm, RegistrationForm, EditProfileForm, \
-    EmptyForm, PostForm, ResetPasswordRequestForm, ResetPasswordForm
-from app.models import User, Post
+    EmptyForm, PostForm, ResetPasswordRequestForm, ResetPasswordForm, ItemForm,EditItemForm
+from app.models import User, Post , Items
 from app.email import send_password_reset_email
+from flask import abort
 import os 
 import secrets
 from PIL import Image
@@ -218,3 +219,57 @@ def unfollow(username):
         return redirect(url_for('user', username=username))
     else:
         return redirect(url_for('index'))
+
+@app.route('/add_item', methods = ['POST','GET'])
+def add_item():
+    user = current_user
+    form = ItemForm()
+    if request.method == 'GET':
+        return render_template('add_item.html',form=form)
+    if request.method == 'POST':
+        if form.validate_on_submit:
+            it = Items(item_name =form.item_name.data,qty =form.qty.data,
+                        price =form.price.data, user_id = user.id
+                       )
+            db.session.add(it)
+            db.session.commit()
+            return redirect('/view_item')
+
+@app.route('/view_item')
+def view_item():
+    
+    itemz = Items.query.filter_by(user_id = current_user.id)
+    print(itemz)
+    return render_template('view_item.html', itemz = itemz)
+
+
+@app.route('/edit_item/<int:id>', methods=['GET', 'POST'])
+def edit_item(id):
+    user = current_user
+    form = EditItemForm()
+    task = Items.query.filter_by(id =id,user_id = current_user.id).first()
+    
+    if form.validate_on_submit():
+        task.item_name = form.item_name.data
+        task.qty = form.qty.data
+        task.price = form.price.data
+        db.session.commit()
+        return redirect('/view_item')
+        
+    elif request.method == 'GET':
+        form.item_name.data = task.item_name
+        form.qty.data = task.qty
+        form.price.data = task.price
+    return render_template('edit_item.html',form=form)
+
+@app.route('/delete_item/<int:id>', methods=['GET','POST'])
+def delete_item(id):
+    task = Items.query.filter_by(id =id,user_id = current_user.id).first()
+    if request.method == 'POST':
+        if task:
+            db.session.delete(task)
+            db.session.commit()
+            return redirect('/todos')
+        abort(404)
+ 
+    return render_template('delete_item.html')

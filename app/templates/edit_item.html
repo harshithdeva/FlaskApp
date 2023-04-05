@@ -1,0 +1,27 @@
+
+{% extends 'base.html'%}
+{% block content%}
+</div>
+<section class="container">
+   <div class="row">
+      <div class="col" a>
+         <!-- A column inside a row inside a container! -->
+         <form action="" method="post">
+            <p>
+               {{ form.item_name.label }}<br>
+               {{ form.item_name(size =32) }}
+            </p>
+            <p>
+               {{ form.qty.label }}<br>
+               {{ form.qty(size=32) }}
+            </p>
+            <p>
+               {{ form.qty.label }}<br>
+               {{ form.qty(size=32) }}
+            </p>
+            <p>{{ form.submit() }}</p>
+         </form>
+      </div>
+   </div>
+</section>
+{% endblock %}

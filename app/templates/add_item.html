@@ -1,0 +1,25 @@
+{% extends 'base.html'%}
+{% block content%}
+<section class="container">
+   <div class="row">
+      <div class="col" a>
+        
+         <form action="" method="post" novalidate>
+            <p>
+               {{ form.item_name.label }}<br>
+               {{ form.item_name(size =32) }}
+            </p>
+            <p>
+               {{ form.qty.label }}<br>
+               {{ form.qty(size=32) }}
+            </p>
+            <p>
+               {{ form.price.label }}<br>
+               {{ form.price(size=32) }}
+            </p>
+            <p>{{ form.submit() }}</p>
+         </form>
+      </div>
+   </div>
+</section>
+{% endblock%}

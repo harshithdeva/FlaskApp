@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, SubmitField, \
-    TextAreaField
+    TextAreaField, IntegerField, FloatField
 from wtforms.validators import ValidationError, DataRequired, Email, EqualTo, \
     Length
 from flask_babel import _, lazy_gettext as _l
@@ -75,3 +75,15 @@ class EmptyForm(FlaskForm):
 class PostForm(FlaskForm):
     post = TextAreaField(_l('Say something'), validators=[DataRequired()])
     submit = SubmitField(_l('Submit'))
+
+class ItemForm(FlaskForm):
+    item_name = StringField('Item Name', validators=[DataRequired()])
+    qty = IntegerField('Quantity', validators=[DataRequired()])
+    price = IntegerField('Price',  validators=[DataRequired()])
+    submit = SubmitField('Add Item')
+
+class EditItemForm(FlaskForm):
+    item_name = StringField('Name', validators=[DataRequired()])
+    qty = IntegerField('Due Date', validators=[DataRequired()])
+    price = IntegerField('Price',  validators=[DataRequired()])
+    submit = SubmitField('Edit Item')

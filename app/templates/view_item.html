@@ -1,0 +1,22 @@
+{% extends 'base.html'%}
+{% block content%}
+<section class="container">
+   <a href={{ url_for('add_item') }}>
+   <button class="add_button ">Add New Item</button>
+   </a>
+   <div class="row">
+      <div class="col" >
+         {% for item in itemz %}
+         <ul id =round>
+            <li>{{item.item_name}}</li>
+            <br>
+            <li>{{item.qty}}</li>
+            <br>
+            <li>{{item.price}}</li>
+            <br>
+         </ul>
+         {% endfor %}
+      </div>
+   </div>
+</section>
+{% endblock %}
