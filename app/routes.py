@@ -253,19 +253,20 @@ def view_item():
 def edit_item(id):
     user = current_user
     form = EditItemForm()
-    task = Items.query.filter_by(id =id,user_id = current_user.id).first()
+    itemz = Items.query.filter_by(id =id,user_id = current_user.id).first()
     
-    if form.validate_on_submit():
-        task.item_name = form.item_name.data
-        task.qty = form.qty.data
-        task.price = form.price.data
-        db.session.commit()
-        return redirect('/view_item')
+    if request.method == 'POST':
+        if form.validate_on_submit():
+            itemz.item_name = form.item_name.data
+            itemz.qty = form.qty.data
+            itemz.price = form.price.data
+            db.session.commit()
+            return redirect('/view_item')
         
     elif request.method == 'GET':
-        form.item_name.data = task.item_name
-        form.qty.data = task.qty
-        form.price.data = task.price
+        form.item_name.data = itemz.item_name
+        form.qty.data = itemz.qty
+        form.price.data = itemz.price
     return render_template('edit_item.html',form=form)
 
 @app.route('/delete_item/<int:id>', methods=['GET','POST'])

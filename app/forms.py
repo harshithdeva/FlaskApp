@@ -84,6 +84,6 @@ class ItemForm(FlaskForm):
 
 class EditItemForm(FlaskForm):
     item_name = StringField('Name', validators=[DataRequired()])
-    qty = IntegerField('Due Date', validators=[DataRequired()])
+    qty = IntegerField('Quantity', validators=[DataRequired()])
     price = IntegerField('Price',  validators=[DataRequired()])
     submit = SubmitField('Edit Item')
