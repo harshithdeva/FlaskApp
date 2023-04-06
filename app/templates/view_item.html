@@ -8,14 +8,19 @@
       <div class="col" >
          {% for item in itemz %}
          <ul id =round>
+            <p>Item Name</p>
             <li>{{item.item_name}}</li>
             <br>
+            <p>Quantity</p>
             <li>{{item.qty}}</li>
             <br>
+            <p>Price</p>
             <li>{{item.price}}</li>
             <br>
          </ul>
          {% endfor %}
+         <p> Total is:</p>
+         <p> {{sum1}}</p>
       </div>
    </div>
 </section>

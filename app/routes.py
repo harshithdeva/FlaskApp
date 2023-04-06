@@ -8,6 +8,7 @@ from app.forms import LoginForm, RegistrationForm, EditProfileForm, \
     EmptyForm, PostForm, ResetPasswordRequestForm, ResetPasswordForm, ItemForm,EditItemForm
 from app.models import User, Post , Items
 from app.email import send_password_reset_email
+from sqlalchemy.sql import func  
 from flask import abort
 import os 
 import secrets
@@ -221,6 +222,7 @@ def unfollow(username):
         return redirect(url_for('index'))
 
 @app.route('/add_item', methods = ['POST','GET'])
+@login_required
 def add_item():
     user = current_user
     form = ItemForm()
@@ -234,13 +236,17 @@ def add_item():
             db.session.add(it)
             db.session.commit()
             return redirect('/view_item')
-
+ 
+@login_required     
 @app.route('/view_item')
 def view_item():
     
     itemz = Items.query.filter_by(user_id = current_user.id)
+    sum1= db.session.query(db.func.sum(Items.price).filter(Items.user_id == current_user.id))
     print(itemz)
-    return render_template('view_item.html', itemz = itemz)
+    for sum2 in sum1.all():
+        print(sum1)
+    return render_template('view_item.html', itemz = itemz,sum1=sum1)
 
 
 @app.route('/edit_item/<int:id>', methods=['GET', 'POST'])
