@@ -251,7 +251,7 @@ def view_item():
 def edit_item(id):
     user = current_user
     form = EditItemForm()
-    itemz = Items.query.filter_by(id =id,user_id = current_user.id).first()
+    itemz = Items.query.filter_by(id =id,user_id = user.id).first()
     
     if form.validate_on_submit():
             itemz.item_name = form.item_name.data
@@ -274,7 +274,7 @@ def delete_item(id):
         if task:
             db.session.delete(task)
             db.session.commit()
-            return redirect('/todos')
+            return redirect('/view_item')
         abort(404)
  
     return render_template('delete_item.html')
