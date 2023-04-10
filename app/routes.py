@@ -8,7 +8,7 @@ from app.forms import LoginForm, RegistrationForm, EditProfileForm, \
     EmptyForm, PostForm, ResetPasswordRequestForm, ResetPasswordForm, ItemForm,EditItemForm
 from app.models import User, Post , Items
 from app.email import send_password_reset_email
-from sqlalchemy.sql import func  
+from sqlalchemy.sql import func, update  
 from flask import abort
 import os 
 import secrets
@@ -242,10 +242,8 @@ def add_item():
 def view_item():
     
     itemz = Items.query.filter_by(user_id = current_user.id)
-    sum1= db.session.query(db.func.sum(Items.price).filter(Items.user_id == current_user.id))
     print(itemz)
-    for sum2 in sum1.all():
-        print(sum1)
+    sum1 = Items.query.with_entities(func.sum(Items.price).label('total')).first().total
     return render_template('view_item.html', itemz = itemz,sum1=sum1)
 
 
@@ -255,11 +253,11 @@ def edit_item(id):
     form = EditItemForm()
     itemz = Items.query.filter_by(id =id,user_id = current_user.id).first()
     
-    if request.method == 'POST':
-        if form.validate_on_submit():
+    if form.validate_on_submit():
             itemz.item_name = form.item_name.data
             itemz.qty = form.qty.data
             itemz.price = form.price.data
+            #db.session.execute(update(itemz.item_name,itemz.qty,itemz.price ))
             db.session.commit()
             return redirect('/view_item')
         
