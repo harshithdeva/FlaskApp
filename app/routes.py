@@ -20,7 +20,7 @@ def before_request():
         db.session.commit()
     g.locale = str(get_locale())
 
-
+# Index page view function
 @app.route('/', methods=['GET', 'POST'])
 @app.route('/index', methods=['GET', 'POST'])
 @login_required
@@ -43,7 +43,7 @@ def index():
                            posts=posts.items, next_url=next_url,
                            prev_url=prev_url)
 
-
+# Explore page view function
 @app.route('/explore')
 @login_required
 def explore():
@@ -58,7 +58,7 @@ def explore():
                            posts=posts.items, next_url=next_url,
                            prev_url=prev_url)
 
-
+# Login page view function
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
@@ -76,13 +76,13 @@ def login():
         return redirect(next_page)
     return render_template('login.html', title=_('Sign In'), form=form)
 
-
+# Logout function
 @app.route('/logout')
 def logout():
     logout_user()
     return redirect(url_for('index'))
 
-
+# New User registration page view function
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if current_user.is_authenticated:
@@ -97,7 +97,7 @@ def register():
         return redirect(url_for('login'))
     return render_template('register.html', title=_('Register'), form=form)
 
-
+# Reset Password function
 @app.route('/reset_password_request', methods=['GET', 'POST'])
 def reset_password_request():
     if current_user.is_authenticated:
@@ -129,6 +129,7 @@ def reset_password(token):
         return redirect(url_for('login'))
     return render_template('reset_password.html', form=form)
 
+# Custom avatar image function
 def save_picture(form_picture):
     random_hex = secrets.token_hex(8)
     _, f_ext = os.path.splitext(form_picture.filename)
@@ -142,6 +143,7 @@ def save_picture(form_picture):
 
     return picture_fn
 
+# User profile page view function
 @app.route('/user/<username>')
 @login_required
 def user(username):
@@ -159,7 +161,7 @@ def user(username):
                            next_url=next_url, prev_url=prev_url, form=form)
 
 
-
+# Edit Profile view function
 @app.route('/edit_profile', methods=['GET', 'POST'])
 @login_required
 def edit_profile():
@@ -179,7 +181,7 @@ def edit_profile():
     return render_template('edit_profile.html', title=_('Edit Profile'),
                            form=form)
 
-
+# Follow other users function
 @app.route('/follow/<username>', methods=['POST'])
 @login_required
 def follow(username):
@@ -199,7 +201,7 @@ def follow(username):
     else:
         return redirect(url_for('index'))
 
-
+# Unfollow users function
 @app.route('/unfollow/<username>', methods=['POST'])
 @login_required
 def unfollow(username):
