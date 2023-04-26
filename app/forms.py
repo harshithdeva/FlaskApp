@@ -9,13 +9,14 @@ from app import app
 from flask_wtf import RecaptchaField
 from flask_wtf.file import FileField, FileAllowed
 
+# Defines the Login Form
 class LoginForm(FlaskForm):
     username = StringField(_l('Username'), validators=[DataRequired()])
     password = PasswordField(_l('Password'), validators=[DataRequired()])
     remember_me = BooleanField(_l('Remember Me'))
     submit = SubmitField(_l('Sign In'))
 
-
+# Defines the registration form
 class RegistrationForm(FlaskForm):
     username = StringField(_l('Username'), validators=[DataRequired()])
     email = StringField(_l('Email'), validators=[DataRequired(), Email()])
@@ -24,6 +25,7 @@ class RegistrationForm(FlaskForm):
     password2 = PasswordField(
         _l('Repeat Password'), validators=[DataRequired(),
                                            EqualTo('password')])
+    # Defines the field for Google Recaptcha
     recaptcha = RecaptchaField()
     submit = SubmitField(_l('Register'))
     def validate_username(self, username):
@@ -36,7 +38,7 @@ class RegistrationForm(FlaskForm):
         if user is not None:
             raise ValidationError(_('Please use a different email address.'))
 
-
+# Defines the password reset form
 class ResetPasswordRequestForm(FlaskForm):
     email = StringField(_l('Email'), validators=[DataRequired(), Email()])
     submit = SubmitField(_l('Request Password Reset'))
@@ -49,7 +51,7 @@ class ResetPasswordForm(FlaskForm):
                                            EqualTo('password')])
     submit = SubmitField(_l('Request Password Reset'))
 
-
+# Defines profile edit form
 class EditProfileForm(FlaskForm):
     username = StringField(_l('Username'), validators=[DataRequired()])
     about_me = TextAreaField(_l('About me'),
